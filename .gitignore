@@ -1,0 +1,89 @@
+# ============================================================
+# Secrets / local environment
+# ============================================================
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# Dependencies / local runtime
+# ============================================================
+node_modules/
+npm-debug.log*
+*.log
+
+# ============================================================
+# Private/generated data
+# ============================================================
+data/raw/
+data/processed/
+data/manual/
+data/ops/
+app/data/
+
+# ============================================================
+# Customer-specific configuration
+# ============================================================
+config/customer-profile.json
+config/backups/
+
+# Keep legacy/internal configuration private until reviewed.
+config/profile.json
+
+# ============================================================
+# Backups / working archives
+# ============================================================
+*.BACKUP*
+*.backup*
+*.bak
+backups/
+src.backup-*/
+tmp/
+
+# ============================================================
+# Generated reports / customer output
+# ============================================================
+project-discovery.html
+project-leads.html
+
+# ============================================================
+# Local test artifacts
+# ============================================================
+/company-match-test.js
+/entity-adversarial-test.js
+/precision-v3-helper-test.js
+/precision-v3-multiperson-patch.js
+/precision-v3-multiperson-regression.js
+/precision-v3-patch.js
+/production-company-match-test.js
+/production-individual-confirmation-test.js
+/production-role-test.js
+/relationship-test.js
+/roofing-validation-v2.js
+/roofing-validation.js
+/project-history-subtype-v2.js
+/project-history-subtype-v3.js
+/test-you-search.js
+/you-evidence-test.js
+
+# ============================================================
+# OS / editor artifacts
+# ============================================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ============================================================
+# Private production source
+# ============================================================
+# Only the explicitly listed public source files belong in the
+# public repository. All other src/ implementation files remain
+# local/private.
+src/*
+!src/fetch.js
+!src/customer-feed.js
+!src/customer-profile.js
+!src/generate-customer-feed.js
+!src/serve-app.js

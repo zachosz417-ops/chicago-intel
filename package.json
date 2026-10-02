@@ -1,0 +1,15 @@
+{
+  "name": "chicago-intel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --check src/fetch.js && node --check src/customer-feed.js && node --check src/customer-profile.js && node --check src/generate-customer-feed.js && node --check src/serve-app.js",
+    "fetch": "node src/fetch.js",
+    "dev": "node src/serve-app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

@@ -1,0 +1,20 @@
+{
+  "customer_id": "example-customer",
+  "company_name": "Example Commercial Contractor",
+  "target_roles": [
+    "CONTRACTOR-GENERAL CONTRACTOR"
+  ],
+  "target_project_types": [
+    "NEW_CONSTRUCTION",
+    "RENOVATION"
+  ],
+  "target_scales": [
+    "COMMERCIAL_SCALE",
+    "LARGE_SCALE"
+  ],
+  "geography": {
+    "wards": [],
+    "community_areas": []
+  },
+  "alert_frequency": "DAILY"
+}
