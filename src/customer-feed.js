@@ -163,11 +163,10 @@ function buildSignals(event) {
     });
   }
 
-  return signals.map((signal, index) => ({
-    signal_id: `SIG-${clean(event.permit_id)}-${index + 1}`,
+  return signals.map(signal => ({
     type: signal.type,
-    detected_at: event.detected_at,
-    description: signal.description
+    observed_at: event.detected_at || null,
+    details: signal.description
   }));
 }
 
@@ -188,10 +187,9 @@ function buildOpportunity(row, eventMap) {
 
   if (row.observation_status === 'NEW_TO_HISTORY') {
     signals.push({
-      signal_id: `SIG-${permitId}-NEW`,
       type: 'NEW_OPPORTUNITY',
-      detected_at: row.issue_date || row.observed_at || null,
-      description: 'New qualifying opportunity added to the monitored discovery feed.'
+      observed_at: row.issue_date || row.observed_at || null,
+      details: 'New qualifying opportunity added to the monitored discovery feed.'
     });
   }
 
