@@ -6,7 +6,8 @@ const state = {
   projectType: 'ALL',
   projectScale: 'ALL',
   sort: 'newest',
-  selectedOpportunity: null
+  selectedOpportunity: null,
+  customerAccount: null
 };
 
 const app = document.getElementById('app');
@@ -239,7 +240,7 @@ function opportunityCard(opportunity) {
   `;
 }
 
-function renderDashboard() {
+function renderDashboard(account = state.customerAccount) {
   const rows = filteredOpportunities();
 
   const projectTypes = [
@@ -251,6 +252,8 @@ function renderDashboard() {
   ];
 
   app.innerHTML = `
+    ${paymentPanel(account?.subscription_status || 'INACTIVE')}
+
     <section class="summary-grid">
       <button class="summary-card ${state.view === 'all' ? 'active' : ''}" data-view="all">
         <strong>${state.feed.summary.opportunities}</strong>
@@ -941,6 +944,120 @@ function renderCustomerOnboarding(user, message = '') {
 }
 
 
+async function startCheckout() {
+  const button = document.getElementById('subscribe-button');
+  const messageEl = document.getElementById('payment-message');
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Opening checkout…';
+  }
+
+  if (messageEl) {
+    messageEl.textContent = '';
+  }
+
+  try {
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!sessionData.session) {
+      throw new Error('Your session has expired. Please sign in again.');
+    }
+
+    const { data, error } = await supabaseClient.functions.invoke(
+      'create-checkout-session',
+      {
+        method: 'POST'
+      }
+    );
+
+    if (error) {
+      console.error('create-checkout-session error:', error);
+      console.error('create-checkout-session error context:', {
+        name: error?.name,
+        message: error?.message,
+        context: error?.context,
+        status: error?.context?.status,
+      });
+
+      let detail = error?.message || 'Unable to start checkout.';
+
+      try {
+        if (error?.context && typeof error.context.clone === 'function') {
+          const response = error.context.clone();
+          const body = await response.text();
+          console.error('create-checkout-session response body:', body);
+
+          if (body) {
+            detail += ` — ${body}`;
+          }
+        }
+      } catch (diagnosticError) {
+        console.error(
+          'Unable to read create-checkout-session response body:',
+          diagnosticError
+        );
+      }
+
+      throw new Error(detail);
+    }
+
+    if (!data?.url) {
+      throw new Error('Checkout did not return a payment URL.');
+    }
+
+    window.location.href = data.url;
+  } catch (error) {
+    if (button) {
+      button.disabled = false;
+      button.textContent = 'Subscribe — $99/month';
+    }
+
+    if (messageEl) {
+      messageEl.textContent =
+        error?.message || 'Unable to start checkout.';
+    }
+  }
+}
+
+function paymentPanel(subscriptionStatus) {
+  const active = subscriptionStatus === 'ACTIVE';
+
+  if (active) {
+    return `
+      <section class="payment-card payment-active">
+        <div>
+          <p class="eyebrow">SUBSCRIPTION</p>
+          <h2>Chicago Intel is active</h2>
+          <p>Your subscription is active and your intelligence feed is available.</p>
+        </div>
+        <span class="status-badge">ACTIVE</span>
+      </section>
+    `;
+  }
+
+  return `
+    <section class="payment-card">
+      <div>
+        <p class="eyebrow">SUBSCRIPTION</p>
+        <h2>Unlock Chicago Intel</h2>
+        <p>
+          Get access to your personalized Chicago commercial project intelligence feed.
+        </p>
+        <strong class="payment-price">$99/month</strong>
+        <p id="payment-message" class="auth-message"></p>
+      </div>
+
+      <button id="subscribe-button" type="button">
+        Subscribe — $99/month
+      </button>
+    </section>
+  `;
+}
+
 async function handleAuthenticatedUser(user) {
   const { data, error } = await supabaseClient
     .from('customer_accounts')
@@ -955,8 +1072,22 @@ async function handleAuthenticatedUser(user) {
     return;
   }
 
-  await loadFeed();
-  renderDashboard();
+  state.customerAccount = data;
+
+  if (data.subscription_status !== 'ACTIVE') {
+    app.innerHTML = paymentPanel(data.subscription_status);
+  } else {
+    await loadFeed();
+    renderDashboard(data);
+  }
+
+  const subscribeButton = document.getElementById('subscribe-button');
+
+  if (subscribeButton) {
+    subscribeButton.addEventListener('click', () => {
+      startCheckout();
+    });
+  }
 }
 
 async function initAuth() {
@@ -973,6 +1104,7 @@ async function initAuth() {
   supabaseClient.auth.onAuthStateChange((_event, session) => {
     if (!session?.user) {
       state.feed = null;
+      state.customerAccount = null;
       state.selectedOpportunity = null;
       renderAuth();
     }
