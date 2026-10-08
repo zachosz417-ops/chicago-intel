@@ -453,6 +453,22 @@ function renderDetail(opportunity) {
 }
 
 function bindDashboardEvents() {
+  const dashboardSignout = document.getElementById('dashboard-signout');
+
+  if (dashboardSignout) {
+    dashboardSignout.addEventListener('click', async () => {
+      dashboardSignout.disabled = true;
+      dashboardSignout.textContent = 'Signing out…';
+
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        dashboardSignout.disabled = false;
+        dashboardSignout.textContent = 'Sign out';
+        throw error;
+      }
+    });
+  }
   document.querySelectorAll('[data-view]').forEach(button => {
     button.addEventListener('click', () => {
       state.view = button.dataset.view;
@@ -941,6 +957,7 @@ function renderCustomerOnboarding(user, message = '') {
     .addEventListener('click', async () => {
       await supabaseClient.auth.signOut();
     });
+
 }
 
 
@@ -1034,7 +1051,12 @@ function paymentPanel(subscriptionStatus) {
           <h2>Chicago Intel is active</h2>
           <p>Your subscription is active and your intelligence feed is available.</p>
         </div>
-        <span class="status-badge">ACTIVE</span>
+        <div class="subscription-actions">
+          <span class="status-badge">ACTIVE</span>
+          <button id="dashboard-signout" type="button" class="secondary-button">
+            Sign out
+          </button>
+        </div>
       </section>
     `;
   }
