@@ -1,10 +1,13 @@
-const CACHE_NAME = 'chicago-intel-pwa-v2';
+const CACHE_NAME = 'chicago-intel-pwa-v21';
 
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './trade-relevance.js',
+  './contact-research.js',
+  './contact-research-priority.js',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png'

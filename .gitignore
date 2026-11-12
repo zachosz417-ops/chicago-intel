@@ -87,3 +87,10 @@ src/*
 !src/customer-profile.js
 !src/generate-customer-feed.js
 !src/serve-app.js
+# ============================================================
+# Local/private data and pilot importer
+# ============================================================
+/data/
+/local-test/
+/how postgresql
+/app/contact-pilot-import.js
