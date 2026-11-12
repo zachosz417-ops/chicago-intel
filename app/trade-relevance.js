@@ -38,7 +38,7 @@ const TRADE_RULES = {
     descriptionTerms: [
       'roofing', 'reroof', 're-roof',
       'roof replacement', 'roof repair',
-      , 'roofing work',
+      'roofing work',
       'roof coating', 'roof restoration', 'roof membrane',
       'roofing membrane', 'roof reconstruction',
       'reconstruction of roof', 'replace existing roof',
@@ -81,7 +81,7 @@ function includesTerm(text, term) {
     const precedingWords = paddedText
       .slice(0, index)
       .trim()
-      .split(/\s+/)
+      .split(/\\s+/)
       .filter(Boolean)
       .slice(-6);
 
