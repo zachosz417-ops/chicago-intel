@@ -1013,7 +1013,7 @@ function sharedCompanyResearchMarkup(record, loadError = '') {
             valueMarkup = `<a href="tel:${escapeHtml(telValue)}">${escapeHtml(field.value)}</a>`;
           }
         } else if (field.type === 'email' && field.value) {
-          valueMarkup = `<a href="mailto:${encodeURIComponent(String(field.value))}">${escapeHtml(field.value)}</a>`;
+          valueMarkup = `<a href="mailto:${encodeURIComponent(String(field.value)).replace(/%40/gi, '@')}">${escapeHtml(field.value)}</a>`;
         }
 
         const sourceUrl = safeCompanyResearchUrl(field.source);
