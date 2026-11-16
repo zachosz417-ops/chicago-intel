@@ -63,6 +63,7 @@ function openCompanyResearch(companyName) {
 
 function returnFromCompanyResearch() {
   state.companyResearchHistoryActive = false;
+  state.companyResearchRequestId += 1;
   const returnOpportunity = state.companyResearchReturnOpportunity;
   state.companyResearchReturnOpportunity = null;
 
@@ -950,8 +951,7 @@ async function loadSharedCompanyResearch() {
 
   if (error) {
     state.companyResearchDirectoryError = error.message || 'The shared company research table is unavailable.';
-    state.companyResearchDirectory = [];
-    return state.companyResearchDirectory;
+    return [];
   }
 
   state.companyResearchDirectoryError = '';
