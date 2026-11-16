@@ -18,7 +18,10 @@ const state = {
   detailHistoryActive: false,
   companyResearchHistoryActive: false,
   companyResearchReturnOpportunity: null,
-  companyResearchReturnScrollY: 0
+  companyResearchReturnScrollY: 0,
+  companyResearchDirectory: null,
+  companyResearchDirectoryError: '',
+  companyResearchRequestId: 0
 };
 
 const app = document.getElementById('app');
@@ -50,7 +53,12 @@ function openCompanyResearch(companyName) {
     ''
   );
 
-  renderCompanyResearch(companyName);
+  const requestId = ++state.companyResearchRequestId;
+  renderCompanyResearch(companyName, requestId).catch(error => {
+    console.error('Shared company research load failed:', error);
+    const message = document.getElementById('company-shared-research-message');
+    if (message) message.textContent = 'Shared company research could not be loaded. Please try opening this company again.';
+  });
 }
 
 function returnFromCompanyResearch() {
@@ -930,7 +938,122 @@ function contactResearchWorkspaceMarkup() {
 }
 
 
-function renderCompanyResearch(companyName) {
+async function loadSharedCompanyResearch() {
+  if (state.companyResearchDirectory !== null) {
+    return state.companyResearchDirectory;
+  }
+
+  const { data, error } = await supabaseClient
+    .from('company_research')
+    .select('company_name, website, website_source_url, phone, phone_source_url, email, email_source_url, source_url')
+    .limit(300);
+
+  if (error) {
+    state.companyResearchDirectoryError = error.message || 'The shared company research table is unavailable.';
+    state.companyResearchDirectory = [];
+    return state.companyResearchDirectory;
+  }
+
+  state.companyResearchDirectoryError = '';
+  state.companyResearchDirectory = Array.isArray(data) ? data : [];
+  return state.companyResearchDirectory;
+}
+
+function safeCompanyResearchUrl(value) {
+  if (!value) return '';
+  try {
+    const parsed = new URL(value);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
+  } catch (_) {
+    return '';
+  }
+}
+
+function sharedCompanyResearchMarkup(record, loadError = '') {
+  if (loadError) {
+    return `
+      <section class="detail-section company-shared-research">
+        <h3>Shared company contact information</h3>
+        <p class="muted" id="company-shared-research-message">
+          Shared company research could not be loaded. Please try again later.
+        </p>
+      </section>
+    `;
+  }
+
+  if (!record) {
+    return `
+      <section class="detail-section company-shared-research">
+        <h3>Shared company contact information</h3>
+        <p class="muted" id="company-shared-research-message">
+          No shared company-level contact record was found for this company.
+        </p>
+      </section>
+    `;
+  }
+
+  const fields = [
+    { label: 'Company website', value: record.website, source: record.website_source_url, type: 'url' },
+    { label: 'Public business phone', value: record.phone, source: record.phone_source_url, type: 'phone' },
+    { label: 'Public business email', value: record.email, source: record.email_source_url, type: 'email' }
+  ].filter(field => field.value || field.source);
+
+  const fieldMarkup = fields.length
+    ? fields.map(field => {
+        let valueMarkup = escapeHtml(field.value || 'Not supplied');
+
+        if (field.type === 'url' && field.value) {
+          const safeUrl = safeCompanyResearchUrl(field.value);
+          if (safeUrl) {
+            valueMarkup = `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(field.value)}</a>`;
+          }
+        } else if (field.type === 'phone' && field.value) {
+          const telValue = String(field.value).replace(/[^0-9+*#,;]/g, '');
+          if (telValue) {
+            valueMarkup = `<a href="tel:${escapeHtml(telValue)}">${escapeHtml(field.value)}</a>`;
+          }
+        } else if (field.type === 'email' && field.value) {
+          valueMarkup = `<a href="mailto:${encodeURIComponent(String(field.value))}">${escapeHtml(field.value)}</a>`;
+        }
+
+        const sourceUrl = safeCompanyResearchUrl(field.source);
+        const sourceMarkup = sourceUrl
+          ? `<span>Source: <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">Open supporting source</a></span>`
+          : '';
+
+        return `
+          <li class="company-evidence-item">
+            <strong>${escapeHtml(field.label)}:</strong>
+            <span>${valueMarkup}</span>
+            ${sourceMarkup}
+          </li>
+        `;
+      }).join('')
+    : '<li class="company-evidence-item"><span>No website, phone, or email was supplied in the shared company record.</span></li>';
+
+  const generalSourceUrl = safeCompanyResearchUrl(record.source_url);
+  const generalSourceMarkup = generalSourceUrl
+    ? `<p>General company source: <a href="${escapeHtml(generalSourceUrl)}" target="_blank" rel="noopener noreferrer">Open source</a></p>`
+    : '';
+
+  return `
+    <section class="detail-section company-shared-research">
+      <h3>Shared company contact information</h3>
+      <p class="muted">
+        Company-level details shared with active subscribers. These are source-supplied records,
+        not independently verified by Chicago Intel. Review the supporting sources before relying on them.
+      </p>
+      <ul class="company-evidence-list">${fieldMarkup}</ul>
+      ${generalSourceMarkup}
+      <p class="muted" id="company-shared-research-message" role="status"></p>
+    </section>
+  `;
+}
+
+async function renderCompanyResearch(companyName, requestId = state.companyResearchRequestId) {
+  const sharedRecords = await loadSharedCompanyResearch();
+  if (requestId !== state.companyResearchRequestId) return;
+
   const report = window.ChicagoIntelResearchPriority;
   const profiles = window.ChicagoIntelContactResearch?.profiles || [];
 
@@ -942,6 +1065,13 @@ function renderCompanyResearch(companyName) {
     String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 
   const companyKey = normalize(companyName);
+  const sharedCompanyRecord = sharedRecords.find(
+    item => normalize(item.company_name) === companyKey
+  );
+  const sharedResearchMarkup = sharedCompanyResearchMarkup(
+    sharedCompanyRecord,
+    state.companyResearchDirectoryError
+  );
   const company = reportCompanies.find(
     item => normalize(item.company_name) === companyKey
   );
@@ -1475,10 +1605,7 @@ function renderCompanyResearch(companyName) {
 
         ${researchEditorMarkup}
 
-        <section class="detail-section">
-          <h3>Contact information</h3>
-          <p class="muted">No verified phone number or email address is available in this research profile. No contact details have been inferred.</p>
-        </section>
+        ${sharedResearchMarkup}
 
         <p class="data-disclaimer">Research priority is a sorting aid, not proof of available work, an awarded contract, a purchasing relationship, or a decision-maker. Reported participant roles are not necessarily decision-making roles.</p>
       </article>
