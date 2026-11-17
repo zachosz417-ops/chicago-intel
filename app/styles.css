@@ -568,3 +568,597 @@ h3 {
     width: 100%;
   }
 }
+
+/* Customer-specific trade relevance */
+.trade-relevance {
+  margin: 12px 0;
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 11px;
+}
+
+.trade-relevance > strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #111827;
+}
+
+.trade-match {
+  padding: 9px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.trade-match-label {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.trade-match p,
+.trade-relevance > p {
+  margin: 7px 0 0;
+  color: #4b5563;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.trade-relevance .trade-relevance-disclaimer {
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.profile-editor-card {
+  margin-bottom: 18px;
+  padding: 17px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+}
+
+.profile-editor-card h2 {
+  margin: 0 0 8px;
+  font-size: 19px;
+}
+
+.profile-editor-card fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.profile-editor-card legend {
+  padding: 0 5px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.profile-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.profile-option input {
+  width: 17px;
+  height: 17px;
+  accent-color: #3730a3;
+}
+
+@media (max-width: 420px) {
+  .profile-editor-card fieldset {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Opportunity card redesign */
+.opportunity-card {
+  display: block;
+  width: 100%;
+  padding: 17px;
+  color: #111827;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.opportunity-card h3 {
+  margin: 8px 0 14px;
+  font-size: 20px;
+}
+
+.card-facts,
+.participant-context,
+.next-action {
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.card-facts h4,
+.participant-context h4 {
+  margin: 0 0 9px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.card-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card-meta strong {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.participant-context .company-list {
+  margin-top: 8px;
+}
+
+.next-action {
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+}
+
+.next-action strong {
+  font-size: 13px;
+}
+
+.next-action p,
+.participant-context > p {
+  margin: 6px 0 0;
+  color: #4b5563;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.card-open-button {
+  padding: 8px 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #111827;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.card-open-button:hover {
+  background: #eef2ff;
+  border-color: #a5b4fc;
+}
+
+.opportunity-card .card-footer {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 420px) {
+  .card-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Compact dashboard opportunity preview */
+.card-match-preview {
+  margin: 13px 0;
+  padding: 11px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.card-match-preview strong,
+.card-participant-summary strong {
+  display: block;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.card-match-preview p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.card-participant-summary {
+  margin-top: 12px;
+}
+
+.opportunity-card .card-description {
+  margin: 10px 0;
+  color: #4b5563;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.opportunity-card .card-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.opportunity-card .card-meta strong {
+  font-size: 13px;
+}
+
+.opportunity-card .card-footer {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.card-open-button {
+  min-height: 38px;
+}
+
+@media (max-width: 420px) {
+  .opportunity-card .card-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Local-only sales activity prototype */
+.sales-tracker {
+  margin-top: 22px;
+  padding: 17px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.sales-tracker h3 {
+  margin-top: 0;
+}
+
+.sales-tracker-note {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sales-tracker label {
+  display: block;
+  margin: 13px 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sales-tracker select,
+.sales-tracker textarea,
+.sales-tracker input[type="date"] {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+}
+
+.sales-tracker textarea {
+  resize: vertical;
+}
+
+.sales-tracker-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.sales-tracker-footer button {
+  min-height: 40px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 9px;
+  background: #1e3a8a;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#sales-save-message {
+  color: #475569;
+  font-size: 12px;
+}
+
+
+/* Dashboard sales pipeline */
+.sales-card-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.sales-status-pill {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.sales-card-followup {
+  color: #475569;
+  font-size: 12px;
+}
+
+.sales-followup-count {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+
+/* Local-only contact intelligence pilot */
+.contact-intelligence {
+  border: 1px solid var(--border-color, #374151);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 18px;
+}
+
+.contact-research-disclaimer,
+.contact-pilot-note {
+  color: var(--muted, #9ca3af);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.contact-research-row {
+  border-top: 1px solid var(--border-color, #374151);
+  padding: 14px 0;
+  display: grid;
+  gap: 7px;
+}
+
+.contact-research-role,
+.contact-source-type {
+  color: var(--muted, #9ca3af);
+  font-size: 0.9rem;
+}
+
+.contact-source-type {
+  display: block;
+  margin-top: 2px;
+}
+
+.contact-research-row ul {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+.contact-research-row li {
+  margin: 7px 0;
+}
+
+.contact-research-row a {
+  overflow-wrap: anywhere;
+}
+
+
+/* Local Contact Research Workspace */
+.research-workspace {
+  margin: 1rem 0;
+}
+
+.research-workspace-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 0.75rem;
+}
+
+.research-workspace-table {
+  margin: 1rem 0;
+}
+
+.research-workspace-table summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.75rem 0;
+}
+
+.research-table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.research-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.research-table-scroll th,
+.research-table-scroll td {
+  padding: 0.65rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-color, #ddd);
+}
+
+.research-table-scroll th {
+  white-space: nowrap;
+}
+
+
+/* Contact Research Workspace filters */
+.research-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.85rem;
+  margin: 1rem 0;
+}
+
+.research-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.research-filters input,
+.research-filters select {
+  width: 100%;
+  min-width: 0;
+}
+
+#research-company-rows tr[hidden] {
+  display: none;
+}
+
+
+/* Individual Contact Research Company Pages */
+.company-name-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--link-color, #1769aa);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.company-research-page { margin: 1rem 0; }
+.company-evidence-status {
+  padding: 0.85rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 0.65rem;
+}
+.company-evidence-status p { margin: 0.4rem 0; }
+.company-evidence-list { padding-left: 1.25rem; }
+.company-evidence-item { margin: 0.85rem 0; overflow-wrap: anywhere; }
+.company-evidence-item strong,
+.company-evidence-item span,
+.company-evidence-item a {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.company-project-card {
+  padding: 0.85rem;
+  margin: 0.75rem 0;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 0.65rem;
+}
+.company-project-card p { margin: 0.4rem 0; }
+.company-project-card button { margin-top: 0.5rem; }
+
+
+/* Local-only additional contact records */
+.additional-contacts-section {
+  grid-column: 1 / -1;
+  margin-top: 0.75rem;
+}
+.additional-contact-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 0.65rem;
+  min-width: 0;
+}
+.additional-contact-card legend {
+  padding: 0 0.35rem;
+  font-weight: 700;
+}
+.additional-contact-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+.additional-contact-card input,
+.additional-contact-card select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.additional-contact-card button {
+  justify-self: start;
+}
+.additional-contacts-section > button {
+  margin: 0.5rem 0 1rem;
+}
+
+/* Local-only company research editor */
+.company-research-editor form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+.company-research-editor form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+.company-research-editor input,
+.company-research-editor textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.company-research-editor textarea {
+  resize: vertical;
+}
+.company-research-editor form button,
+.company-research-editor form #company-research-save-message {
+  grid-column: 1 / -1;
+}
+.company-research-record-status {
+  display: inline-block;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+
+/* Contact research readiness summary and filter */
+.research-workspace-summary span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 0.5rem;
+}
+
+#research-readiness-filter {
+  max-width: 100%;
+}
